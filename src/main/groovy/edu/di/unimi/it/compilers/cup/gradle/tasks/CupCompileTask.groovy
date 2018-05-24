@@ -1,4 +1,4 @@
-package edu.di.unimi.it.compilers.cup.gradle.edu.di.unimi.it.compilers.cup.gradle.tasks
+package edu.di.unimi.it.compilers.cup.gradle.tasks
 
 import java_cup.Main
 import org.gradle.api.DefaultTask
