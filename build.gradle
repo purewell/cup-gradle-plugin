@@ -1,0 +1,36 @@
+plugins {
+    id 'groovy'
+    id 'maven-publish'
+}
+
+group 'edu.di.unimi.it.compilers'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile gradleApi()
+    compile files("$project.projectDir/libs/java-cup-11b.jar")
+}
+
+
+jar {
+    from {
+        ["$project.projectDir/libs/java-cup-11b.jar",
+         "$project.projectDir/libs/java-cup-11b-runtime.jar"]
+                .collect { zipTree(it) }
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
