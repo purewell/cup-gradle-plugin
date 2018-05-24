@@ -8,9 +8,9 @@ class CupPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.with {
-            apply plugin: 'org.xbib.gradle.plugin.jflex'
+            apply plugin: 'java'
             tasks.create(name: 'cupCompile', type: CupCompileTask)
-            tasks.jflex.dependsOn tasks.cupCompile
+            tasks.compileJava.dependsOn tasks.cupCompile
             sourceSets.main.java.srcDirs += tasks.cupCompile.generateDir
 
             dependencies {
