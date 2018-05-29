@@ -9,13 +9,17 @@ class CupPlugin implements Plugin<Project> {
     void apply(Project project) {
         project.with {
             apply plugin: 'java'
+            extensions.create('cup', CupPluginExtension, project)
             tasks.create(name: 'cupCompile', type: CupCompileTask)
             tasks.compileJava.dependsOn tasks.cupCompile
-            sourceSets.main.java.srcDirs += tasks.cupCompile.generateDir
-
             dependencies {
                 compile 'com.github.vbmacher:java-cup-runtime:11b-20160615'
             }
+        }
+
+        project.afterEvaluate {
+            project.tasks.cupCompile.loadConfig()
+            project.sourceSets.main.java.srcDirs += project.tasks.cupCompile.generateDir
         }
     }
 }
