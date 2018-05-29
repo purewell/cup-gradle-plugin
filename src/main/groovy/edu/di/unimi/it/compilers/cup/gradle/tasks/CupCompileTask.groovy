@@ -54,10 +54,20 @@ class CupCompileTask extends DefaultTask {
                     String[] args = ["-expect", expectedConflicts.toString(),
                                      "-destdir", dirPath.toString(),
                                      cupFile.file.absolutePath]
+
+                    PrintStream syserr = System.err
+                    System.setErr(new PrintStream(new OutputStream() {
+                        @Override
+                        void write(int i) throws IOException {
+                            // our version of /dev/null
+                        }
+                    }))
                     Main.main(args)
+                    System.setErr(syserr)
                 }
                 catch (Exception e) {
                     logger.error("cup generation failed", e)
+                    throw new GradleException("cup generation failed", e)
                 }
             }
         }
