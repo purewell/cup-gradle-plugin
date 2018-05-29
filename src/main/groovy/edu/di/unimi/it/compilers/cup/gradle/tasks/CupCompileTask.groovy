@@ -21,7 +21,6 @@ class CupCompileTask extends DefaultTask {
 
     @TaskAction
     void buildCleanCup() {
-        project.mkdir(generateDir)
         cupCompile()
     }
 
