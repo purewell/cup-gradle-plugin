@@ -13,10 +13,8 @@ class CupPlugin implements Plugin<Project> {
             tasks.compileJava.dependsOn tasks.cupCompile
             sourceSets.main.java.srcDirs += tasks.cupCompile.generateDir
 
-            // hack to inject cup runtime into the project
-            // TODO: find a way to clean it up
             dependencies {
-                compile 'edu.di.unimi.it.compilers:cup-gradle-plugin:1.0'
+                compile 'com.github.vbmacher:java-cup-runtime:11b-20160615'
             }
         }
     }

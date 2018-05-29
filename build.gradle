@@ -12,16 +12,7 @@ repositories {
 
 dependencies {
     compile gradleApi()
-    compile files("$project.projectDir/libs/java-cup-11b.jar")
-}
-
-
-jar {
-    from {
-        ["$project.projectDir/libs/java-cup-11b.jar",
-         "$project.projectDir/libs/java-cup-11b-runtime.jar"]
-                .collect { zipTree(it) }
-    }
+    compile 'com.github.vbmacher:java-cup:11b-20160615'
 }
 
 publishing {
