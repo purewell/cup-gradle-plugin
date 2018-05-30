@@ -20,18 +20,7 @@ class CupCompileTask extends DefaultTask {
     int expectedConflicts
 
     @TaskAction
-    void buildCleanCup() {
-        cupCompile()
-    }
-
-    void loadConfig() {
-        def ext = project.extensions.getByType(CupPluginExtension)
-        sourceDir = project.file(ext.sourceDir)
-        generateDir = project.file(ext.generateDir)
-        expectedConflicts = ext.expectedConflicts
-    }
-
-    void cupCompile() {
+    void run() {
         def cupFiles = project.fileTree(dir: sourceDir, include: "**/*.cup")
 
         if (cupFiles.filter { !it.directory }.empty) {
@@ -42,33 +31,38 @@ class CupCompileTask extends DefaultTask {
                 if (cupFile.directory)
                     return
 
-                try {
-                    def dirPath = generateDir.toPath().resolve(
-                            sourceDir.toPath().relativize(
-                                    cupFile.file.getParentFile().toPath()))
-                            .toAbsolutePath()
+                def dirPath = generateDir.toPath().resolve(
+                        sourceDir.toPath().relativize(
+                                cupFile.file.getParentFile().toPath()))
+                        .toAbsolutePath()
 
-                    project.mkdir(dirPath.toFile())
+                project.mkdir(dirPath.toFile())
 
-                    String[] args = ["-expect", expectedConflicts.toString(),
-                                     "-destdir", dirPath.toString(),
-                                     cupFile.file.absolutePath]
+                String[] cupArgs = ["-expect", expectedConflicts.toString(),
+                                    "-destdir", dirPath.toString(),
+                                    cupFile.file.absolutePath]
 
-                    PrintStream syserr = System.err
-                    System.setErr(new PrintStream(new OutputStream() {
-                        @Override
-                        void write(int i) throws IOException {
-                            // our version of /dev/null
-                        }
-                    }))
-                    Main.main(args)
-                    System.setErr(syserr)
+                def myErr = new ByteArrayOutputStream()
+
+                def result = project.javaexec {
+                        args cupArgs
+                        classpath = project.buildscript.configurations.classpath
+                        main = Main.class.getName()
+                        errorOutput = myErr
+                        ignoreExitValue = true
                 }
-                catch (Exception e) {
-                    logger.error("cup generation failed", e)
-                    throw new GradleException("cup generation failed", e)
+
+                if (result.exitValue != 0) {
+                    throw new GradleException(myErr.toString("UTF-8"))
                 }
             }
         }
+    }
+
+    void loadConfig() {
+        def ext = project.extensions.getByType(CupPluginExtension)
+        sourceDir = project.file(ext.sourceDir)
+        generateDir = project.file(ext.generateDir)
+        expectedConflicts = ext.expectedConflicts
     }
 }
