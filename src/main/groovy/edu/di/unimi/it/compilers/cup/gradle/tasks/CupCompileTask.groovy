@@ -17,7 +17,7 @@ class CupCompileTask extends DefaultTask {
     @OutputDirectory
     File generateDir
 
-    int expectedConflicts
+    String[] arguments
 
     @TaskAction
     void run() {
@@ -38,9 +38,8 @@ class CupCompileTask extends DefaultTask {
 
                 project.mkdir(dirPath.toFile())
 
-                String[] cupArgs = ["-expect", expectedConflicts.toString(),
-                                    "-destdir", dirPath.toString(),
-                                    cupFile.file.absolutePath]
+                String[] cupArgs = [arguments, ["-destdir", dirPath.toString(),
+                                    cupFile.file.absolutePath]].flatten()
 
                 def myErr = new ByteArrayOutputStream()
 
@@ -63,6 +62,6 @@ class CupCompileTask extends DefaultTask {
         def ext = project.extensions.getByType(CupPluginExtension)
         sourceDir = project.file(ext.sourceDir)
         generateDir = project.file(ext.generateDir)
-        expectedConflicts = ext.expectedConflicts
+        arguments = ext.args
     }
 }

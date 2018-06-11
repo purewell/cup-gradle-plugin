@@ -12,4 +12,4 @@ buildscript {
 }
 ```
 
-even when using the new plug-in sytnax, to ensure the download of the correct library.
+even when using the new plug-in syntax, to ensure the download of the correct library.
