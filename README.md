@@ -19,7 +19,7 @@ Additionally, custom command line arguments can be supplied to the cup compiler 
 cup {
     sourceDir = my/sources/directory
     generateDir = my/generated/sources/directory
-    args = ["-interface", "-locations"]
+    args = ["-interface", "-locations", "-parser", "MyParserClassName", "-symbols", "MySymbolsClassName"]
 }
 ```
 
