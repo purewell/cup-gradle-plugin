@@ -5,7 +5,9 @@ import java_cup.Main
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.file.FileVisitDetails
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
@@ -17,6 +19,8 @@ class CupCompileTask extends DefaultTask {
     @OutputDirectory
     File generateDir
 
+    @Input
+    @Optional
     String[] arguments
 
     @TaskAction
@@ -46,7 +50,7 @@ class CupCompileTask extends DefaultTask {
                 def result = project.javaexec {
                         args cupArgs
                         classpath = project.buildscript.configurations.classpath
-                        main = Main.class.getName()
+                        mainClass = Main.class.getName()
                         errorOutput = myErr
                         ignoreExitValue = true
                 }
