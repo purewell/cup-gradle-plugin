@@ -14,7 +14,7 @@ class CupPlugin implements Plugin<Project> {
             tasks.compileJava.dependsOn tasks.cupCompile
 
             dependencies {
-                compile 'com.github.vbmacher:java-cup-runtime:11b-20160615'
+                implementation 'com.github.vbmacher:java-cup-runtime:11b-20160615'
             }
         }
 

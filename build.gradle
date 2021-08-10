@@ -1,31 +1,40 @@
 plugins {
     id 'groovy'
     id 'maven-publish'
-    id 'com.gradle.plugin-publish' version '0.9.10'
+    id 'com.gradle.plugin-publish' version '0.15.0'
+    id 'java-gradle-plugin'
 }
 
 group 'edu.di.unimi.it.compilers'
-version '1.2'
+version '2.0'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile gradleApi()
-    compile 'com.github.vbmacher:java-cup:11b-20160615'
+    implementation gradleApi()
+    implementation 'com.github.vbmacher:java-cup:11b-20160615'
 }
 
 pluginBundle {
     website = 'https://gitlab.com/MassimilianoPoggi/cup-gradle-plugin'
     vcsUrl = 'https://gitlab.com/MassimilianoPoggi/cup-gradle-plugin.git'
+    tags = ['cup']
+    description = 'A gradle plugin for the CUP (Construction of Useful Parsers) parser generator.'
 
     plugins {
         cupGradlePlugin {
-            id = 'cup.gradle.cup-gradle-plugin'
             displayName = 'CUP Gradle plugin'
-            description = 'A gradle plugin for the CUP (Construction of Useful Parsers) parser generator.'
-            tags = ['cup']
+	}
+    }
+}
+
+gradlePlugin {
+    plugins {
+        cupGradlePlugin {
+            id = 'cup.gradle.cup-gradle-plugin'
+	    implementationClass = 'edu.di.unimi.it.compilers.cup.gradle.CupPlugin'
         }
     }
 }
