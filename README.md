@@ -5,7 +5,7 @@ A gradle plugin for the [CUP](http://www2.cs.tum.edu/projects/cup/) (Constructio
 Add the plugin to the list of imported plugins in your build.gradle file:
 ```
 plugins {
-    id "cup.gradle.cup-gradle-plugin" version "1.2"
+    id "cup.gradle.cup-gradle-plugin" version "2.0"
 }
 ```
 
